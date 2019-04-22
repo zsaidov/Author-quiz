@@ -18,9 +18,7 @@ function Hero() {
 
 function Book({title, onClick}) {
     return (
-        <div className="answer" onClick={() => {
-            onClick(title);
-        }}>
+        <div className="answer" onClick={() => onClick(title)}>
             <h4>{title}</h4>
         </div>
     );
@@ -38,7 +36,7 @@ function Turn({author, books, highlight, onAnswerSelected}) {
 
     return (<div className="row turn" style={{backgroundColor: highlightToBgColor(highlight)}}>
         <div className="col-4 offset-1">
-            <img width="300" src={author.imageUrl} alt="Author" className="authorimage"/>
+            <img width="300" src={author.imageUrl} alt="Author" className="author-image"/>
         </div>
         <div className="col-6">
             {books.map((title) => <Book key={title} title={title} onClick={onAnswerSelected}/>)}
@@ -76,6 +74,7 @@ function Continue({show, onContinue}) {
             </div> : null}
     </div>);
 }
+
 function mapStateToProps(state) {
     return {
         turnData: state.turnData,
@@ -86,10 +85,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onAnswerSelected: (answer) => {
-            dispatch({ type: 'ANSWER_SELECTED', answer });
+            dispatch({type: 'ANSWER_SELECTED', answer});
         },
         onContinue: () => {
-            dispatch({ type: 'CONTINUE' });
+            dispatch({type: 'CONTINUE'});
         }
     };
 }
@@ -98,11 +97,11 @@ const AuthorQuiz = connect(mapStateToProps, mapDispatchToProps)(
     function ({turnData, highlight, onAnswerSelected, onContinue}) {
         return (
             <div className="container-fluid">
-                <Hero />
-                <Turn {...turnData} highlight={highlight} onAnswerSelected={onAnswerSelected} />
+                <Hero/>
+                <Turn {...turnData} highlight={highlight} onAnswerSelected={onAnswerSelected}/>
                 <Continue show={highlight === 'correct'} onContinue={onContinue}/>
                 <p><Link to="/add">Add an author</Link></p>
-                <Footer />
+                <Footer/>
             </div>
         );
     });

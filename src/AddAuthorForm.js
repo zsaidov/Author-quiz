@@ -1,6 +1,7 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import './styles/AddAuthorForm.css';
-
+import {withRouter} from 'react-router-dom';
 
 class AuthorForm extends React.Component {
 
@@ -16,11 +17,11 @@ class AuthorForm extends React.Component {
         this.handleAddBook = this.handleAddBook.bind(this);
     }
 
-    handleAddBook(){
+    handleAddBook() {
         this.setState({
             books: this.state.books.concat([this.state.bookTemp]),
-            bookTemp:''
-        })
+            bookTemp: ''
+        });
     }
 
     onFieldChange(event) {
@@ -35,27 +36,36 @@ class AuthorForm extends React.Component {
     }
 
     render() {
-        return  <form onSubmit={this.handleSubmit}>
+        return <form onSubmit={this.handleSubmit}>
             <div className="AddAuthorForm-input">
                 <label htmlFor="name">Name</label>
                 <input type="text" name="name" value={this.state.name} onChange={this.onFieldChange}/>
             </div>
             <div className="AddAuthorForm-input">
-                <label htmlFor="imageurl">ImageUrl</label>
+                <label htmlFor="imageUrl">ImageUrl</label>
                 <input type="text" name="imageUrl" value={this.state.imageUrl} onChange={this.onFieldChange}/>
             </div>
             <div className="AddAuthorForm-input">
                 <label htmlFor="bookTemp">Books</label>
-                {this.state.books.map((book)=> <p key={book}>{book}</p>)}
+                {this.state.books.map((book) => <p key={book}>{book}</p>)}
                 <input type="text" name="bookTemp" value={this.state.bookTemp} onChange={this.onFieldChange}/>
                 <input type="button" value="+" onClick={this.handleAddBook}/>
             </div>
             <div>
                 <input type="submit" className="btn btn-success" value="Save"/>
             </div>
-        </form>
+        </form>;
     }
 
+}
+
+function mapDispatchToProps(dispatch,props) {
+    return {
+        onAddAuthor: (author) => {
+            dispatch({type: 'ADD_AUTHOR', author: author});
+            props.history.push('/')
+        }
+    };
 }
 
 function AddAuthorForm({onAddAuthor}) {
@@ -65,4 +75,5 @@ function AddAuthorForm({onAddAuthor}) {
     </div>);
 }
 
-export default AddAuthorForm;
+export default withRouter(connect(() => {
+}, mapDispatchToProps)(AddAuthorForm));
